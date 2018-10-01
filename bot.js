@@ -76,7 +76,7 @@ class BasicBot {
                 await context.sendActivity(`No worries`);
             break;            
             case HELP_INTENT:
-                await context.sendActivity(`Let me try to provide some help.`);
+                await context.sendActivity(`No worries, Let me try to provide some help.`);
                 await context.sendActivity(`I understand greetings, being asked for help, or being asked to cancel what I am doing.`);
             break;
             case CANCEL_INTENT:
