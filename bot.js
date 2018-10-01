@@ -73,6 +73,7 @@ class BasicBot {
             break;
             case DATA_PRIVACY:
                 await context.sendActivity(`Oh I see, data is very important and we...`);
+                await context.sendActivity(`2222`);
             break;            
             case HELP_INTENT:
                 await context.sendActivity(`Let me try to provide some help.`);
