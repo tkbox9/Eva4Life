@@ -19,6 +19,11 @@ const HELP_INTENT = 'Help';
 const DATA_PRIVACY = 'DataPrivacy';
 const NONE_INTENT = 'None';
 
+const ImageGalleryCard = require('./resources/ImageGalleryCard.json');
+
+const CARDS = [
+    ImageGalleryCard
+];
 
 /**
  * Demonstrates the following concepts:
@@ -70,6 +75,11 @@ class BasicBot {
             switch (topIntent) {
             case GREETING_INTENT:
                 await context.sendActivity(`Hello3.`);
+                const randomlySelectedCard = CARDS[Math.floor((Math.random() * CARDS.length - 1) + 1)];
+                await context.sendActivity({
+                    text: 'Here is an Adaptive Card:',
+                    attachments: [CardFactory.adaptiveCard(randomlySelectedCard)]
+                });               
             break;
             case DATA_PRIVACY:
                 await context.sendActivity(`Oh I see, data is very important and we...`);
