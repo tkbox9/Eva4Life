@@ -19,7 +19,7 @@ const HELP_INTENT = 'Help';
 const DATA_PRIVACY = 'DataPrivacy';
 const NONE_INTENT = 'None';
 
-const ImageGalleryCard = require('./resources/ImageGalleryCard.json');
+const ImageGalleryCard = require('./resources/RestaurantCard.json');
 
 const CARDS = [
     ImageGalleryCard
@@ -74,7 +74,7 @@ class BasicBot {
             // Determine what we should do based on the top intent from LUIS.
             switch (topIntent) {
             case GREETING_INTENT:
-                await context.sendActivity(`Hello3.`);
+                await context.sendActivity(`Hola resta.`);
                 const randomlySelectedCard = CARDS[Math.floor((Math.random() * CARDS.length - 1) + 1)];
                 await context.sendActivity({
                     text: 'Here is an Adaptive Card:',
