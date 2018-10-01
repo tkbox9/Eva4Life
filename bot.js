@@ -55,6 +55,15 @@ class BasicBot {
             endpointKey: luisConfig.authoringKey
         });
 
+        this.ConversationState = botConfig;
+        this.dialogs = new DialogSet(this.dialogState);
+
+        const prompt = new ChoicePrompt('cardPrompt');
+
+        // Set the choice rendering to list and then add it to the bot's DialogSet.
+        prompt.style = ListStyle.list;
+        this.dialogs.add(prompt);
+
     }
 
     /**
@@ -76,9 +85,33 @@ class BasicBot {
             const results = await this.luisRecognizer.recognize(context);
             const topIntent = LuisRecognizer.topIntent(results);
 
+
+
             // Determine what we should do based on the top intent from LUIS.
             switch (topIntent) {
             case GREETING_INTENT:
+            const dc = await this.dialogs.createContext(turnContext);
+
+            const results = await dc.continueDialog();
+            if (!turnContext.responded && results.status === DialogTurnStatus.empty) {
+                await turnContext.sendActivity('Welcome to the Rich Cards Bot!');
+                // Create the PromptOptions which contain the prompt and reprompt messages.
+                // PromptOptions also contains the list of choices available to the user.
+                const promptOptions = {
+                    prompt: 'Please select a card:',
+                    reprompt: 'That was not a valid choice, please select a card or number from 1 to 8.',
+                    choices: this.getChoices()
+                };
+
+                // Prompt the user with the configured PromptOptions.
+                await dc.prompt('cardPrompt', promptOptions);
+
+            // The bot parsed a valid response from user's prompt response and so it must respond.
+            } else if (results.status === DialogTurnStatus.complete) {
+                await this.sendCardResponse(turnContext, results);
+            }
+            await this.conversationState.saveChanges(turnContext);
+        }
                 await context.sendActivity(`holaaaa.`);
             break;
             case DATA_PRIVACY:
